@@ -1,0 +1,102 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma-client"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Student {
+  id          String       @id @default(cuid())
+  name        String
+  email       String       @unique
+  phone       String
+  // New fields
+  nricPassportId String    @unique
+  address     String?
+  remarks     String?
+  documents   String[]     @default([]) // file paths or URLs
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  
+  // Relations
+  enrollments Enrollment[]
+  payments    Payment[]
+  
+  @@map("students")
+}
+
+model Course {
+  id          String       @id @default(cuid())
+  name        String
+  description String?
+  duration    String?      // e.g., "3 months", "6 weeks"
+  price       Decimal      @db.Decimal(10, 2)
+  isActive    Boolean      @default(true)
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  
+  // Relations
+  enrollments Enrollment[]
+  
+  @@map("courses")
+}
+
+model Enrollment {
+  id          String       @id @default(cuid())
+  studentId   String
+  courseId    String
+  batch       String?      // e.g., "Batch 2024-01"
+  startDate   DateTime
+  endDate     DateTime?
+  status      EnrollmentStatus @default(ACTIVE)
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  
+  // Relations
+  student     Student      @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  course      Course       @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  payments    Payment[]
+  
+  @@map("enrollments")
+}
+
+model Payment {
+  id           String        @id @default(cuid())
+  studentId    String
+  enrollmentId String
+  amount       Decimal       @db.Decimal(10, 2)
+  method       PaymentMethod
+  date         DateTime
+  notes        String?
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  
+  // Relations
+  student      Student       @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  enrollment   Enrollment    @relation(fields: [enrollmentId], references: [id], onDelete: Cascade)
+  
+  @@map("payments")
+}
+
+enum EnrollmentStatus {
+  ACTIVE
+  COMPLETED
+  CANCELLED
+  SUSPENDED
+}
+
+enum PaymentMethod {
+  CASH
+  BANK_TRANSFER
+  CREDIT_CARD
+  DEBIT_CARD
+  ONLINE_PAYMENT
+  CHECK
+}
+
