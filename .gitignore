@@ -39,3 +39,20 @@ Thumbs.db
 
 # Prisma
 backend/prisma/migrations/
+
+# Uploaded files
+backend/src/uploads/student-docs/*
+!backend/src/uploads/student-docs/.gitkeep
+
+# Production builds
+frontend/dist/
+backend/dist/
+
+# Test coverage
+coverage/
+.nyc_output/
+
+# Temporary files
+*.tmp
+*.temp
+.cache/
