@@ -15,7 +15,7 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 
 
-// Root route - simple test
+// Root route - simple test for this action
 app.get('/', (req, res) => {
   res.json({ 
     message: 'VA CRM API',
