@@ -14,6 +14,22 @@ const uploadRoutes = require('./routes/upload');
 const app = express();
 const PORT = process.env.PORT || 5000;
 
+
+// Root route - simple test
+app.get('/', (req, res) => {
+  res.json({ 
+    message: 'VA CRM API',
+    status: 'online',
+    timestamp: new Date().toISOString()
+  });
+});
+
+// Health check
+app.get('/health', (req, res) => {
+  res.json({ status: 'OK', timestamp: new Date().toISOString() });
+});
+
+
 // Middleware
 app.use(helmet());
 app.use(cors({
