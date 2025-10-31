@@ -39,6 +39,7 @@ app.use(morgan('combined'));
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
+/*
 // Root route - simple test for this action
 app.get('/', (req, res) => {
   res.json({ 
@@ -47,6 +48,7 @@ app.get('/', (req, res) => {
     timestamp: new Date().toISOString()
   });
 });
+*/
 
 // Health check
 app.get('/health', (req, res) => {
