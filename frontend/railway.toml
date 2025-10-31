@@ -1,20 +1,17 @@
 [build]
 builder = "nixpacks"
-buildCommand = "npm install && npm run build"
+buildCommand = "npm run build"
 
 [deploy]
-startCommand = "npm run preview"
+startCommand = "npm run preview -- --host 0.0.0.0 --port $PORT"
 restartPolicyType = "ON_FAILURE"
 restartPolicyMaxRetries = 3
-
-[phases.setup]
-cmds = ["npm ci"]
 
 [phases.build]
 cmds = ["npm run build"]
 
 [phases.start]
-cmd = "npm run preview"
+cmd = "npm run preview -- --host 0.0.0.0 --port $PORT"
 
 [env]
 NODE_ENV = "production"
