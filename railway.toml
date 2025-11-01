@@ -1,16 +1,25 @@
 [build]
 builder = "nixpacks"
-buildCommand = "npm install"
-
-[deploy]
-startCommand = "npm start"
-restartPolicyType = "ON_FAILURE"
-restartPolicyMaxRetries = 3
-
-[[services]]
-name = "backend"
-directory = "backend"
 
 [[services]]
 name = "frontend"
-directory = "frontend"
+source.path = "frontend"
+env = { NODE_ENV = "production" }
+
+[services.build]
+dockerfilePath = "./frontend/Dockerfile"
+buildCommand = "npm ci && npm run build"
+
+[[services]]
+name = "backend"
+source.path = "backend"
+env = { NODE_ENV = "production" }
+
+[services.domains]
+primary = { name = "api", type = "PRIMARY" }
+
+[deploy]
+numReplicas = 1
+healthcheckTimeout = 300
+restartPolicyType = "ON_FAILURE"
+restartPolicyMaxRetries = 10

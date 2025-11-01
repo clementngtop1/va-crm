@@ -25,6 +25,7 @@
     "postcss": "^8.x",
     "tailwindcss": "^3.x",
     "autoprefixer": "^10.x",
-    "serve": "^14.2.0"
+    "serve": "^14.2.0",
+    "web-vitals": "^3.5.0"
   }
 }
